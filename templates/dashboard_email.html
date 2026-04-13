@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield | Email Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="brand">PhishShield</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/dashboard/url">URL</a>
+            </div>
+        </nav>
+
+        <section class="dashboard-info-card">
+            <h2>Email Scanner</h2>
+            <p>Review sender, subject, and body content to see whether the email looks suspicious.</p>
+        </section>
+
+        <section class="scanner-section">
+            <div class="scanner-card">
+                <label for="emailSender">Sender email</label>
+                <input type="text" id="emailSender" placeholder="Sender email address">
+                <label for="emailSubject">Email subject</label>
+                <input type="text" id="emailSubject" placeholder="Email subject">
+                <label for="emailBody">Email body</label>
+                <textarea id="emailBody" rows="6" placeholder="Email body or message content"></textarea>
+                <div class="scanner-actions">
+                    <button class="cta-button" onclick="checkEmail()">Check Email</button>
+                    <button class="secondary-button" onclick="setEmailSample('security@amazon.com', 'Verify your account now', 'Dear customer, click http://bit.ly/secure-login to confirm your identity.')">Suspicious example</button>
+                </div>
+                <div class="result-box" id="emailResultBox" style="display:none;">
+                    <h3 id="emailVerdict"></h3>
+                    <p id="emailAttackType" class="result-tag"></p>
+                    <p class="result-summary" id="emailResultSummary"></p>
+                    <div class="bar-container"><div class="bar" id="emailRiskBar"></div></div>
+                    <p id="emailScore"></p>
+                    <h4>Reasons</h4>
+                    <ul id="emailReasonsList" class="result-list"></ul>
+                    <h4>Recommendations</h4>
+                    <ul id="emailRecommendationsList" class="result-list"></ul>
+                    <h4>Technical details</h4>
+                    <p id="emailTechnicalDetails" class="technical-text"></p>
+                </div>
+            </div>
+
+            <div class="history-card">
+                <h3>Scan history</h3>
+                <p>Latest email results are shown here.</p>
+                <p id="historyEmpty" class="history-empty">Loading scan history...</p>
+                <div id="historyTableWrapper" style="display:none; overflow-x:auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Source</th>
+                                <th>Score</th>
+                                <th>Verdict</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+    <script>
+        function setEmailSample(sender, subject, body) {
+            document.getElementById('emailSender').value = sender;
+            document.getElementById('emailSubject').value = subject;
+            document.getElementById('emailBody').value = body;
+            checkEmail();
+        }
+
+        async function loadHistory() {
+            const response = await fetch('/history');
+            const history = await response.json();
+            const historyEmpty = document.getElementById('historyEmpty');
+            const historyTableWrapper = document.getElementById('historyTableWrapper');
+            const historyBody = document.getElementById('historyBody');
+            historyBody.innerHTML = '';
+            if (!history || history.length === 0) {
+                historyTableWrapper.style.display = 'none';
+                historyEmpty.innerText = 'No scans logged yet.';
+                return;
+            }
+            historyTableWrapper.style.display = 'block';
+            historyEmpty.innerText = '';
+            history.filter(item => item.type === 'EMAIL').slice(0, 20).forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${new Date(entry.timestamp).toLocaleString()}</td><td>${entry.type}</td><td>${entry.source}</td><td>${entry.score}</td><td class="history-verdict ${entry.verdict}">${entry.verdict}</td>`;
+                historyBody.appendChild(row);
+            });
+        }
+
+        async function checkEmail() {
+            const sender = document.getElementById('emailSender').value;
+            const subject = document.getElementById('emailSubject').value;
+            const body = document.getElementById('emailBody').value;
+            if (!sender && !subject && !body) return;
+            const response = await fetch('/check_email', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sender,subject,body})});
+            const data = await response.json();
+            const resultBox = document.getElementById('emailResultBox');
+            const verdictText = document.getElementById('emailVerdict');
+            const attackTypeText = document.getElementById('emailAttackType');
+            const emailResultSummary = document.getElementById('emailResultSummary');
+            const scoreText = document.getElementById('emailScore');
+            const reasonsList = document.getElementById('emailReasonsList');
+            const recommendationsList = document.getElementById('emailRecommendationsList');
+            const technicalDetails = document.getElementById('emailTechnicalDetails');
+            const riskBar = document.getElementById('emailRiskBar');
+            resultBox.style.display = 'block';
+            verdictText.innerText = 'Verdict: ' + data.verdict;
+            attackTypeText.innerText = data.verdict === 'PHISHING' ? 'High risk' : data.verdict === 'SUSPICIOUS' ? 'Review closely' : 'Low risk';
+            verdictText.className = data.verdict === 'PHISHING' ? 'danger' : data.verdict === 'SUSPICIOUS' ? 'warning' : 'safe';
+            scoreText.innerText = 'Risk Score: ' + data.score;
+            riskBar.style.width = data.score + '%';
+            riskBar.style.background = data.score > 60 ? '#ef4444' : data.score > 30 ? '#f59e0b' : '#22c55e';
+            reasonsList.innerHTML = '';
+            (data.reasons || []).forEach(reason => { const li = document.createElement('li'); li.innerText = reason; reasonsList.appendChild(li); });
+            recommendationsList.innerHTML = '';
+            (data.recommendations || []).forEach(item => { const li = document.createElement('li'); li.innerText = item; recommendationsList.appendChild(li); });
+            const details = data.details || {};
+            technicalDetails.innerText = `Sender: ${details.sender || 'unknown'}
+Subject: ${details.subject || 'none'}
+Links: ${details.links && details.links.length ? details.links.join(', ') : 'none'}
+Shortened links: ${details.shortened_links ? 'yes' : 'no'}
+HTML content: ${details.has_html_tags ? 'yes' : 'no'}
+Sender/link mismatch: ${details.sender_domain_mismatch ? 'yes' : 'no'}
+All-caps subject: ${details.subject_all_caps ? 'yes' : 'no'}`;
+            await loadHistory();
+        }
+
+        window.addEventListener('DOMContentLoaded', loadHistory);
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield | URL Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="brand">PhishShield</div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/dashboard">Dashboard</a>
+                <a href="/dashboard/email">Email</a>
+            </div>
+        </nav>
+
+        <section class="dashboard-info-card">
+            <h2>URL Scanner</h2>
+            <p>Enter one URL and get a quick risk verdict with clear reasons and recommendations.</p>
+        </section>
+
+        <section class="scanner-section">
+            <div class="scanner-card">
+                <label for="urlInput">Enter a URL</label>
+                <input type="text" id="urlInput" placeholder="Enter a URL to scan">
+                <div class="scanner-actions">
+                    <button class="cta-button" onclick="checkURL()">Scan Now</button>
+                    <button class="secondary-button" onclick="setUrlSample('http://192.168.1.100/login')">Try suspicious URL</button>
+                </div>
+                <div class="result-box" id="resultBox" style="display:none;">
+                    <h3 id="verdict"></h3>
+                    <p id="attackType" class="result-tag"></p>
+                    <p class="result-summary" id="resultSummary"></p>
+                    <div class="bar-container"><div class="bar" id="riskBar"></div></div>
+                    <p id="score"></p>
+                    <h4>Reasons</h4>
+                    <ul id="reasonsList" class="result-list"></ul>
+                    <h4>Recommendations</h4>
+                    <ul id="recommendationsList" class="result-list"></ul>
+                    <h4>Technical details</h4>
+                    <p id="technicalDetails" class="technical-text"></p>
+                </div>
+            </div>
+
+            <div class="history-card">
+                <h3>Scan history</h3>
+                <p>Latest URL results are shown here.</p>
+                <p id="historyEmpty" class="history-empty">Loading scan history...</p>
+                <div id="historyTableWrapper" style="display:none; overflow-x:auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Type</th>
+                                <th>Source</th>
+                                <th>Score</th>
+                                <th>Verdict</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+    <script>
+        function setUrlSample(url) {
+            document.getElementById('urlInput').value = url;
+            checkURL();
+        }
+
+        async function loadHistory() {
+            const response = await fetch('/history');
+            const history = await response.json();
+            const historyEmpty = document.getElementById('historyEmpty');
+            const historyTableWrapper = document.getElementById('historyTableWrapper');
+            const historyBody = document.getElementById('historyBody');
+            historyBody.innerHTML = '';
+            if (!history || history.length === 0) {
+                historyTableWrapper.style.display = 'none';
+                historyEmpty.innerText = 'No scans logged yet.';
+                return;
+            }
+            historyTableWrapper.style.display = 'block';
+            historyEmpty.innerText = '';
+            history.filter(item => item.type === 'URL').slice(0, 20).forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${new Date(entry.timestamp).toLocaleString()}</td><td>${entry.type}</td><td>${entry.source}</td><td>${entry.score}</td><td class="history-verdict ${entry.verdict}">${entry.verdict}</td>`;
+                historyBody.appendChild(row);
+            });
+        }
+
+        async function checkURL() {
+            const url = document.getElementById('urlInput').value;
+            if (!url) return;
+            const response = await fetch('/check', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url})});
+            const data = await response.json();
+            const resultBox = document.getElementById('resultBox');
+            const verdictText = document.getElementById('verdict');
+            const attackTypeText = document.getElementById('attackType');
+            const resultSummary = document.getElementById('resultSummary');
+            const scoreText = document.getElementById('score');
+            const reasonsList = document.getElementById('reasonsList');
+            const recommendationsList = document.getElementById('recommendationsList');
+            const technicalDetails = document.getElementById('technicalDetails');
+            const riskBar = document.getElementById('riskBar');
+            resultBox.style.display = 'block';
+            verdictText.innerText = 'Verdict: ' + data.verdict;
+            attackTypeText.innerText = data.verdict === 'PHISHING' ? 'High risk' : data.verdict === 'SUSPICIOUS' ? 'Review closely' : 'Low risk';
+            verdictText.className = data.verdict === 'PHISHING' ? 'danger' : data.verdict === 'SUSPICIOUS' ? 'warning' : 'safe';
+            scoreText.innerText = 'Risk Score: ' + data.score;
+            riskBar.style.width = data.score + '%';
+            riskBar.style.background = data.score > 60 ? '#ef4444' : data.score > 30 ? '#f59e0b' : '#22c55e';
+            reasonsList.innerHTML = '';
+            (data.reasons || []).forEach(reason => { const li = document.createElement('li'); li.innerText = reason; reasonsList.appendChild(li); });
+            recommendationsList.innerHTML = '';
+            (data.recommendations || []).forEach(item => { const li = document.createElement('li'); li.innerText = item; recommendationsList.appendChild(li); });
+            const details = data.details || {};
+            technicalDetails.innerText = `Domain: ${details.domain || 'unknown'}
+Resolved IPs: ${details.ip_addresses && details.ip_addresses.length ? details.ip_addresses.join(', ') : 'none'}
+Shortened URL: ${details.shortened_url ? 'yes' : 'no'}
+Brand impersonation: ${details.brand_impersonation ? 'yes' : 'no'}
+New domain: ${details.new_domain ? 'yes' : 'no'}
+Encoded path: ${details.many_encoded_chars ? 'yes' : 'no'}`;
+            await loadHistory();
+        }
+
+        window.addEventListener('DOMContentLoaded', loadHistory);
+    </script>
+</body>
+</html>

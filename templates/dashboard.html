@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhishShield Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="brand" data-i18n="brandName">PhishShield</div>
+            <div class="nav-links">
+                <a href="/" data-i18n="navHome">Home</a>
+                <button class="nav-button" onclick="location.href='/#learn'" data-i18n="navLearn">Learn</button>
+                <button class="nav-button" onclick="location.href='/#story'" data-i18n="navStory">Why this project</button>
+                <button class="cta-button" onclick="location.href='/#contact'" data-i18n="navContact">Contact</button>
+            </div>
+        </nav>
+
+        <section class="dashboard-info-card">
+            <h2 data-i18n="dashboardTitle">How to use PhishShield</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <strong data-i18n="step1Title">1. Paste content</strong>
+                    <p data-i18n="step1Text">Enter a URL or email details into the scanner section.</p>
+                </div>
+                <div class="step-card">
+                    <strong data-i18n="step2Title">2. Scan it</strong>
+                    <p data-i18n="step2Text">Click the button and wait for the dashboard to analyze risk.</p>
+                </div>
+                <div class="step-card">
+                    <strong data-i18n="step3Title">3. Read the result</strong>
+                    <p data-i18n="step3Text">See a simple verdict, reasons, recommendations, and whether it is safe.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-title">
+                <h2>Choose a scanner page</h2>
+                <p>Select the report you want: URL scanning or email analysis.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>URL dashboard</h3>
+                    <p>Open the dedicated URL scanner to inspect one link at a time with clear risk logic.</p>
+                    <button class="cta-button" onclick="location.href='/dashboard/url'">Open URL</button>
+                </div>
+                <div class="feature-card">
+                    <h3>Email dashboard</h3>
+                    <p>Open the email scanner to review sender, subject, and message body in a focused workflow.</p>
+                    <button class="cta-button" onclick="location.href='/dashboard/email'">Open Email</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer data-i18n="footerText">PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+</body>
+</html>
