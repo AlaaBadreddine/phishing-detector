@@ -78,3 +78,16 @@ Open the web interface at `http://127.0.0.1:5000/`.
 - The app stores the last 50 scans in memory for quick dashboard review.
 - This is a demo project; it is not a replacement for production-grade threat intelligence systems.
 
+## Testing and CI
+
+A GitHub Actions workflow is included to run unit tests automatically on pushes and pull requests to `main`.
+
+To run tests locally:
+
+```powershell
+pip install -r requirements-dev.txt
+python -m pytest -q
+```
+
+The test suite covers URL scoring, email scoring, and the shared risk scoring logic.
+
