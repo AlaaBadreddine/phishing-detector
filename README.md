@@ -78,6 +78,10 @@ Open the web interface at `http://127.0.0.1:5000/`.
 - The app stores the last 50 scans in memory for quick dashboard review.
 - This is a demo project; it is not a replacement for production-grade threat intelligence systems.
 
+## Full project description
+
+A complete project description is available in [`PROJECT_DESCRIPTION.md`](PROJECT_DESCRIPTION.md), which explains the app architecture, threat scoring logic, setup, testing, and CI details in full.
+
 ## Testing and CI
 
 A GitHub Actions workflow is included to run unit tests automatically on pushes and pull requests to `main`.
