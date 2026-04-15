@@ -7,162 +7,93 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <div class="brand" data-i18n="brandName">PhishShield</div>
-            <div class="nav-links">
-                <button class="nav-button" onclick="location.href='#overview'" data-i18n="navOverview">Overview</button>
-                <button class="nav-button" onclick="location.href='#learn'" data-i18n="navLearn">What is phishing?</button>
-                <button class="nav-button" onclick="location.href='#story'" data-i18n="navStory">Why this matters</button>
-                <button class="cta-button" onclick="location.href='/dashboard'" data-i18n="navDashboard">Open Dashboard</button>
-            </div>
-        </nav>
-
-        <section class="hero">
-            <div class="hero-copy">
-                <span class="badge" data-i18n="heroBadge">Open Security Project</span>
-                <h1 data-i18n="heroTitle">Study phishing, scan links, and build safer habits.</h1>
-                <p data-i18n="heroSubtitle">PhishShield is a community-driven cybersecurity research platform that makes URL and email risk detection available to everyone. Learn about phishing, inspect suspicious links, verify messages, and explore threat intelligence without any paywall.</p>
-                <div style="margin-top: 28px; display: flex; flex-wrap: wrap; gap: 16px;">
-                    <button class="cta-button" onclick="location.href='/dashboard'" data-i18n="heroTry">Try the Scanner</button>
-                    <button class="secondary-button" onclick="location.href='#story'" data-i18n="heroLearn">Learn why it matters</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="overview">
-            <div class="section-title">
-                <h2>Project overview</h2>
-                <p>PhishShield is built as a free security learning tool. It helps anyone explore phishing risks, understand suspicious links, and practice incident review with a SOC-style history.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>Open research environment</h3>
-                    <p>Inspect URLs, experiment with risk rules, and improve your phishing awareness without a paywall.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Community-friendly toolkit</h3>
-                    <p>Share your findings, test new phishing samples, and use the app as a learning dashboard.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Email and URL scanning</h3>
-                    <p>Scan both links and message content to recognize phishing patterns across email and web threats.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Easy to run</h3>
-                    <p>Launch the app locally and start scanning URLs and suspicious emails with a clean interface.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="story">
-            <div class="section-title">
-                <h2>Why this project exists</h2>
-                <p>PhishShield is not a paid product — it is a learning and protection tool for anyone interested in phishing detection, automation, and safer browsing.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>Open access for everyone</h3>
-                    <p>Every feature is available by default: scanning, history, risk insights, and automation concepts — no subscriptions required.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Learn phishing mechanics</h3>
-                    <p>Understand why phishing URLs are dangerous and how attackers use deceptive domains, IP-based links, and suspicious keywords.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Build stronger defenses</h3>
-                    <p>Use the dashboard as a sandbox for training, incident review, and community learning.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="learn">
-            <div class="section-title">
-                <h2>What is phishing?</h2>
-                <p>Phishing is a social engineering attack where a malicious actor tricks you into sharing credentials, installing malware, or revealing sensitive data.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>Deceptive URLs</h3>
-                    <p>Attackers often use look-alike domains, extra subdomains, or IP addresses to make a link appear legitimate.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Urgent language</h3>
-                    <p>Phishing messages often pressure you to "verify", "update", or "reset" before your account is locked.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Hidden risks</h3>
-                    <p>Even HTTPS can be present on phishing pages — the real danger comes from the destination and its intent.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="workflow">
-            <div class="section-title">
-                <h2>How phishing works</h2>
-                <p>A phishing attack usually follows a simple chain: lure, click, capture, and compromise.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>1. The lure</h3>
-                    <p>A message arrives that looks urgent, official, or familiar, pushing you to act quickly.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>2. The fake link</h3>
-                    <p>A URL uses deceptive domain names, extra subdomains, or direct IP addresses to hide malicious intent.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>3. The click</h3>
-                    <p>The user clicks the link, and the browser lands on a spoofed page that captures credentials or installs malware.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>4. The compromise</h3>
-                    <p>Once credentials or access are stolen, the attacker can breach accounts, steal data, or spread the attack further.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="features">
-            <div class="section-title">
-                <h2 data-i18n="featuresTitle">Features you can use today</h2>
-                <p data-i18n="featuresText">PhishShield combines URL heuristics, threat intelligence, AI-style reasoning, and automation ideas to make cyber defense learning easier.</p>
-            </div>
-
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>Real-time URL scanning</h3>
-                    <p>Analyze links instantly through our heuristic engine and domain intelligence.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>AI-assisted detection</h3>
-                    <p>Use AI-inspired reasoning to explain why a link looks suspicious and suggest what to watch for.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Automation ideas</h3>
-                    <p>See how you could connect scans to alerts, workflows, and incident response tooling.</p>
-                </div>
-                <div class="feature-card">
-                    <h3 data-i18n="featureSOCTitle">Mini SOC dashboard</h3>
-                    <p data-i18n="featureSOCText">Track each scan in a history view so you can revisit past incidents and spot trends.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="contact">
-            <div class="section-title">
-                <h2 data-i18n="contactTitle">Get started with phishing awareness</h2>
-                <p data-i18n="contactText">Use this project to learn how phishing works, test suspicious URLs safely, and explore how automation can improve detection.</p>
-            </div>
-            <button class="cta-button" onclick="location.href='/dashboard'" data-i18n="contactButton">Open Dashboard</button>
-        </section>
+    <div class="scene-grid">
+        <div class="scanline"></div>
     </div>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="brand">PhishShield <span>LAUNCH</span></div>
+                <div class="status-chip">Research • Community</div>
+            </div>
+            <div class="topbar-right">
+                <nav class="nav-links">
+                    <button class="nav-button" onclick="location.href='#overview'">Overview</button>
+                    <button class="nav-button" onclick="location.href='#learn'">Phishing</button>
+                    <button class="nav-button" onclick="location.href='/dashboard'">Dashboard</button>
+                </nav>
+            </div>
+        </header>
 
-    <footer data-i18n="footerText">
-        PhishShield © 2026 · Open phishing research and detection for everyone.
-    </footer>
+        <main class="hero-panel">
+            <span class="hero-eyebrow">PhishShield Control</span>
+            <h1 class="hero-title">Phishing research made cinematic and effortless.</h1>
+            <p class="hero-copy">Explore phishing detection through a premium interface that blends minimal clarity with futuristic cyberpunk depth. Scan URLs, analyze email threats, and view history from a refined command plane.</p>
+            <div class="hero-status">
+                <span class="status-chip-small">Live scanning</span>
+                <span class="status-chip-small">Threat intelligence</span>
+                <span class="status-chip-small">Community-driven</span>
+            </div>
+            <div class="hero-actions">
+                <button class="neon-button primary-button" onclick="location.href='/dashboard'">Open Dashboard</button>
+                <button class="neon-button secondary-button" onclick="location.href='#learn'">Learn Phishing</button>
+            </div>
+            <div class="panel-grid">
+                <article class="panel-card">
+                    <h3>Open platform</h3>
+                    <p>Inspect URLs, experiment with risk rules, and improve your phishing awareness without a paywall.</p>
+                </article>
+                <article class="panel-card">
+                    <h3>Premium workflow</h3>
+                    <p>Organized dashboards, quick actions, and clear threat signals for fast decision-making.</p>
+                </article>
+                <article class="panel-card">
+                    <h3>Clear learning</h3>
+                    <p>Practice phishing analysis with structured insights and easy-to-follow guidance.</p>
+                </article>
+            </div>
+        </main>
+
+        <section class="glass-card" id="overview" style="margin-top: 28px;">
+            <div class="section-title">
+                <h2>Why PhishShield?</h2>
+                <p>Learn phishing mechanics, inspect suspicious links, and review email content with a console-style flow that feels deliberate and polished.</p>
+            </div>
+            <div class="panel-grid">
+                <div class="panel-card">
+                    <h3>Understand threats</h3>
+                    <p>See why a URL or email is flagged and what indicators matter most.</p>
+                </div>
+                <div class="panel-card">
+                    <h3>View history</h3>
+                    <p>Track scans, compare verdicts, and revisit recent security decisions.</p>
+                </div>
+                <div class="panel-card">
+                    <h3>Act fast</h3>
+                    <p>Launch the right scanner and get a verdict with a premium interface built for clarity.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card" id="learn" style="margin-top: 28px; padding: 32px;">
+            <div class="status-row" style="justify-content: space-between; gap: 16px;">
+                <span class="status-chip-small">Current build: 2026.04</span>
+                <span class="status-chip-small">Trusted learning mode</span>
+            </div>
+            <div class="panel-grid" style="margin-top: 24px;">
+                <div class="panel-card">
+                    <h3>URL scanning</h3>
+                    <p>Inspect a single link with focused risk scoring and technical detail breakdown.</p>
+                </div>
+                <div class="panel-card">
+                    <h3>Email analysis</h3>
+                    <p>Review sender, subject, and message content with guided verdicts and recommendations.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+    </div>
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
 </body>
 </html>

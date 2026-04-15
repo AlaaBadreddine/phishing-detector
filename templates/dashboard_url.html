@@ -7,67 +7,124 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <div class="brand">PhishShield</div>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/dashboard">Dashboard</a>
-                <a href="/dashboard/email">Email</a>
+    <div class="scene-grid">
+        <div class="scanline"></div>
+    </div>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="brand">PhishShield <span>URL</span></div>
+                <div class="status-chip">URL intelligence • Live</div>
             </div>
-        </nav>
+            <div class="topbar-right">
+                <nav class="nav-links">
+                    <button class="nav-button" onclick="location.href='/'">Home</button>
+                    <button class="nav-button" onclick="location.href='/dashboard'">Dashboard</button>
+                    <button class="nav-button" onclick="location.href='/dashboard/email'">Email</button>
+                </nav>
+            </div>
+        </header>
 
-        <section class="dashboard-info-card">
-            <h2>URL Scanner</h2>
-            <p>Enter one URL and get a quick risk verdict with clear reasons and recommendations.</p>
-        </section>
-
-        <section class="scanner-section">
-            <div class="scanner-card">
-                <label for="urlInput">Enter a URL</label>
-                <input type="text" id="urlInput" placeholder="Enter a URL to scan">
-                <div class="scanner-actions">
-                    <button class="cta-button" onclick="checkURL()">Scan Now</button>
-                    <button class="secondary-button" onclick="setUrlSample('http://192.168.1.100/login')">Try suspicious URL</button>
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3>Tools</h3>
+                    <div class="sidebar-nav">
+                        <button onclick="location.href='/dashboard/url'">URL Scanner</button>
+                        <button onclick="location.href='/dashboard/email'">Email Analyzer</button>
+                        <button onclick="location.href='/dashboard'">Dashboard</button>
+                    </div>
                 </div>
-                <div class="result-box" id="resultBox" style="display:none;">
+                <div class="sidebar-card">
+                    <h3>Quick actions</h3>
+                    <button class="neon-button primary-button" onclick="checkURL()">Run quick scan</button>
+                    <button class="neon-button secondary-button" onclick="setUrlSample('http://192.168.1.100/login')">Load sample</button>
+                </div>
+                <div class="sidebar-card">
+                    <h3>Info</h3>
+                    <p>URL checks provide a precise risk score and technical trace details for suspicious links.</p>
+                </div>
+            </aside>
+
+            <main class="dashboard-main">
+                <section class="hero-panel">
+                    <span class="hero-eyebrow">URL Intelligence</span>
+                    <h1 class="hero-title">Inspect a link with surgical clarity.</h1>
+                    <p class="hero-copy">Paste a URL and get a polished verdict with neon-grade risk indicators, concise reasoning, and tactical recommendations.</p>
+                    <div class="hero-status">
+                        <span class="status-chip-small">Real-time detection</span>
+                        <span class="status-chip-small">Fast verdicts</span>
+                        <span class="status-chip-small">Technical insight</span>
+                    </div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="glass-card">
+                        <div class="input-group">
+                            <label class="field-label" for="urlInput">URL to analyze</label>
+                            <input type="text" id="urlInput" class="glow-input" placeholder="https://example.com/login">
+                        </div>
+                        <div class="scanner-actions">
+                            <button class="neon-button primary-button" onclick="checkURL()">Scan Now</button>
+                            <button class="neon-button secondary-button" onclick="setUrlSample('http://192.168.1.100/login')">Use suspicious sample</button>
+                        </div>
+                        <div class="status-row" style="margin-top: 20px;">
+                            <span class="status-chip-small">Risk scoring</span>
+                            <span class="status-chip-small">URL analysis</span>
+                        </div>
+                    </section>
+
+                    <aside class="quick-pane">
+                        <h3>Scan history</h3>
+                        <p class="metric-note">Recent URL results are shown here for quick review.</p>
+                        <p id="historyEmpty" class="history-empty">Loading scan history...</p>
+                        <div id="historyTableWrapper" style="display:none; overflow-x:auto;">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Source</th>
+                                        <th>Score</th>
+                                        <th>Verdict</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyBody"></tbody>
+                            </table>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="result-panel" id="resultBox" style="display:none;">
                     <h3 id="verdict"></h3>
                     <p id="attackType" class="result-tag"></p>
                     <p class="result-summary" id="resultSummary"></p>
                     <div class="bar-container"><div class="bar" id="riskBar"></div></div>
-                    <p id="score"></p>
-                    <h4>Reasons</h4>
-                    <ul id="reasonsList" class="result-list"></ul>
-                    <h4>Recommendations</h4>
-                    <ul id="recommendationsList" class="result-list"></ul>
-                    <h4>Technical details</h4>
-                    <p id="technicalDetails" class="technical-text"></p>
+                    <p id="score" class="badge-pill" style="margin-top: 12px; display: inline-flex;">Risk score</p>
+                    <div class="status-row" style="margin-top: 20px;">
+                        <span class="status-chip-small">Attack awareness</span>
+                        <span class="status-chip-small">Risk calibrated</span>
+                    </div>
+                    <div class="streamline" style="margin-top: 24px;">
+                        <div>
+                            <h4>Reasons</h4>
+                            <ul id="reasonsList" class="result-list"></ul>
+                        </div>
+                        <div>
+                            <h4>Recommendations</h4>
+                            <ul id="recommendationsList" class="result-list"></ul>
+                        </div>
+                        <div>
+                            <h4>Technical details</h4>
+                            <p id="technicalDetails" class="technical-text"></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </main>
+        </div>
 
-            <div class="history-card">
-                <h3>Scan history</h3>
-                <p>Latest URL results are shown here.</p>
-                <p id="historyEmpty" class="history-empty">Loading scan history...</p>
-                <div id="historyTableWrapper" style="display:none; overflow-x:auto;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Type</th>
-                                <th>Source</th>
-                                <th>Score</th>
-                                <th>Verdict</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+        <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
     </div>
-
-    <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
     <script>
         function setUrlSample(url) {
             document.getElementById('urlInput').value = url;
@@ -90,7 +147,7 @@
             historyEmpty.innerText = '';
             history.filter(item => item.type === 'URL').slice(0, 20).forEach(entry => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${new Date(entry.timestamp).toLocaleString()}</td><td>${entry.type}</td><td>${entry.source}</td><td>${entry.score}</td><td class="history-verdict ${entry.verdict}">${entry.verdict}</td>`;
+                row.innerHTML = `<td>${new Date(entry.timestamp).toLocaleString()}</td><td>${entry.source}</td><td>${entry.score}</td><td class="history-verdict ${entry.verdict}">${entry.verdict}</td>`;
                 historyBody.appendChild(row);
             });
         }
@@ -121,12 +178,7 @@
             recommendationsList.innerHTML = '';
             (data.recommendations || []).forEach(item => { const li = document.createElement('li'); li.innerText = item; recommendationsList.appendChild(li); });
             const details = data.details || {};
-            technicalDetails.innerText = `Domain: ${details.domain || 'unknown'}
-Resolved IPs: ${details.ip_addresses && details.ip_addresses.length ? details.ip_addresses.join(', ') : 'none'}
-Shortened URL: ${details.shortened_url ? 'yes' : 'no'}
-Brand impersonation: ${details.brand_impersonation ? 'yes' : 'no'}
-New domain: ${details.new_domain ? 'yes' : 'no'}
-Encoded path: ${details.many_encoded_chars ? 'yes' : 'no'}`;
+            technicalDetails.innerText = `Domain: ${details.domain || 'unknown'}\nResolved IPs: ${details.ip_addresses && details.ip_addresses.length ? details.ip_addresses.join(', ') : 'none'}\nShortened URL: ${details.shortened_url ? 'yes' : 'no'}\nBrand impersonation: ${details.brand_impersonation ? 'yes' : 'no'}\nNew domain: ${details.new_domain ? 'yes' : 'no'}\nEncoded path: ${details.many_encoded_chars ? 'yes' : 'no'}`;
             await loadHistory();
         }
 

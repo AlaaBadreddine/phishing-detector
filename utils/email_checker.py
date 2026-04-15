@@ -59,6 +59,7 @@ def check_email(sender, subject, body):
     features["subject_all_caps"] = subject.strip() and subject.strip().upper() == subject.strip() and len(subject.strip()) > 10
     features["attachment_language"] = bool(re.search(r"attachment|file|invoice|document|pdf", body.lower()))
     features["suspicious_sender_format"] = bool(re.search(r"\d{3,}|[-_.]{2,}", sender.split("@")[0]))
+    features["urgent_language"] = features["subject_urgent"] or features["body_phishing_words"]
 
     result = calculate_email_risk(features, sender, subject, links)
     result["features"] = features
@@ -69,6 +70,7 @@ def calculate_email_risk(features, sender, subject, links):
     score = 0
     reasons = []
     recommendations = []
+    fixes = []
 
     if features.get("subject_urgent"):
         score += 15
@@ -124,11 +126,17 @@ def calculate_email_risk(features, sender, subject, links):
         score += 5
         reasons.append("Very short email body")
         recommendations.append("Short messages with urgent requests can be suspicious.")
+        fixes.append("Ask for more context before responding to short, urgent emails.")
 
     if features.get("has_html_tags"):
         score += 5
         reasons.append("HTML content detected")
         recommendations.append("Email HTML can hide dangerous links; use plain text mode if possible.")
+        fixes.append("View the email in plain-text mode to inspect hidden link destinations.")
+
+    if not reasons:
+        recommendations.append("This email looks low risk, but verify the sender and avoid clicking links unless expected.")
+        fixes.append("If unsure, do not reply and confirm the request through a separate channel.")
 
     if score >= 50:
         verdict = "PHISHING"
@@ -147,7 +155,10 @@ def calculate_email_risk(features, sender, subject, links):
         "sender_domain_mismatch": features.get("sender_domain_mismatch"),
         "subject_all_caps": features.get("subject_all_caps"),
         "attachment_language": features.get("attachment_language"),
-        "suspicious_sender_format": features.get("suspicious_sender_format")
+        "suspicious_sender_format": features.get("suspicious_sender_format"),
+        "contains_links": features.get("contains_links"),
+        "sender_free_domain": features.get("sender_free_domain"),
+        "urgent_language": features.get("urgent_language")
     }
 
     return {
@@ -155,5 +166,6 @@ def calculate_email_risk(features, sender, subject, links):
         "verdict": verdict,
         "reasons": reasons,
         "recommendations": recommendations,
+        "fixes": fixes,
         "details": details
     }

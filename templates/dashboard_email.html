@@ -7,71 +7,131 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <div class="brand">PhishShield</div>
-            <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/dashboard">Dashboard</a>
-                <a href="/dashboard/url">URL</a>
+    <div class="scene-grid">
+        <div class="scanline"></div>
+    </div>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="brand">PhishShield <span>MAIL</span></div>
+                <div class="status-chip">Email analysis • Secure</div>
             </div>
-        </nav>
+            <div class="topbar-right">
+                <nav class="nav-links">
+                    <button class="nav-button" onclick="location.href='/'">Home</button>
+                    <button class="nav-button" onclick="location.href='/dashboard'">Dashboard</button>
+                    <button class="nav-button" onclick="location.href='/dashboard/url'">URL</button>
+                </nav>
+            </div>
+        </header>
 
-        <section class="dashboard-info-card">
-            <h2>Email Scanner</h2>
-            <p>Review sender, subject, and body content to see whether the email looks suspicious.</p>
-        </section>
-
-        <section class="scanner-section">
-            <div class="scanner-card">
-                <label for="emailSender">Sender email</label>
-                <input type="text" id="emailSender" placeholder="Sender email address">
-                <label for="emailSubject">Email subject</label>
-                <input type="text" id="emailSubject" placeholder="Email subject">
-                <label for="emailBody">Email body</label>
-                <textarea id="emailBody" rows="6" placeholder="Email body or message content"></textarea>
-                <div class="scanner-actions">
-                    <button class="cta-button" onclick="checkEmail()">Check Email</button>
-                    <button class="secondary-button" onclick="setEmailSample('security@amazon.com', 'Verify your account now', 'Dear customer, click http://bit.ly/secure-login to confirm your identity.')">Suspicious example</button>
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3>Tools</h3>
+                    <div class="sidebar-nav">
+                        <button onclick="location.href='/dashboard/email'">Email Analyzer</button>
+                        <button onclick="location.href='/dashboard/url'">URL Scanner</button>
+                        <button onclick="location.href='/dashboard'">Dashboard</button>
+                    </div>
                 </div>
-                <div class="result-box" id="emailResultBox" style="display:none;">
+                <div class="sidebar-card">
+                    <h3>Workflow</h3>
+                    <p>Enter sender, subject, and body to quickly analyze suspicious emails with a clean, organized workflow.</p>
+                </div>
+                <div class="sidebar-card">
+                    <h3>Insights</h3>
+                    <p>Review content risk patterns and see how each verdict is derived from message signals.</p>
+                </div>
+            </aside>
+
+            <main class="dashboard-main">
+                <section class="hero-panel">
+                    <span class="hero-eyebrow">Email Analysis</span>
+                    <h1 class="hero-title">Inspect sender and message intent with premium detail.</h1>
+                    <p class="hero-copy">Analyze suspicious emails in a minimalist, high-end interface. Capture risks, decode patterns, and understand results instantly.</p>
+                    <div class="hero-status">
+                        <span class="status-chip-small">Sender intelligence</span>
+                        <span class="status-chip-small">Content analysis</span>
+                        <span class="status-chip-small">Verdict clarity</span>
+                    </div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="glass-card">
+                        <div class="input-group">
+                            <label class="field-label" for="emailSender">Sender email</label>
+                            <input type="text" id="emailSender" class="glow-input" placeholder="security@service.com">
+                        </div>
+                        <div class="input-group">
+                            <label class="field-label" for="emailSubject">Email subject</label>
+                            <input type="text" id="emailSubject" class="glow-input" placeholder="Verify account access">
+                        </div>
+                        <div class="input-group">
+                            <label class="field-label" for="emailBody">Message body</label>
+                            <textarea id="emailBody" class="glow-textarea" rows="6" placeholder="Paste email content here..."></textarea>
+                        </div>
+                        <div class="scanner-actions">
+                            <button class="neon-button primary-button" onclick="checkEmail()">Check Email</button>
+                            <button class="neon-button secondary-button" onclick="setEmailSample('security@amazon.com', 'Verify your account now', 'Dear customer, click http://bit.ly/secure-login to confirm your identity.')">Use suspicious sample</button>
+                        </div>
+                        <div class="status-row" style="margin-top: 20px;">
+                            <span class="status-chip-small">Content scanning</span>
+                            <span class="status-chip-small">Threat detail</span>
+                        </div>
+                    </section>
+
+                    <aside class="quick-pane">
+                        <h3>Scan history</h3>
+                        <p class="metric-note">Recent email verdicts are available for rapid review.</p>
+                        <p id="historyEmpty" class="history-empty">Loading scan history...</p>
+                        <div id="historyTableWrapper" style="display:none; overflow-x:auto;">
+                            <table class="history-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Source</th>
+                                        <th>Score</th>
+                                        <th>Verdict</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historyBody"></tbody>
+                            </table>
+                        </div>
+                    </aside>
+                </div>
+
+                <div class="result-panel" id="emailResultBox" style="display:none;">
                     <h3 id="emailVerdict"></h3>
                     <p id="emailAttackType" class="result-tag"></p>
                     <p class="result-summary" id="emailResultSummary"></p>
                     <div class="bar-container"><div class="bar" id="emailRiskBar"></div></div>
-                    <p id="emailScore"></p>
-                    <h4>Reasons</h4>
-                    <ul id="emailReasonsList" class="result-list"></ul>
-                    <h4>Recommendations</h4>
-                    <ul id="emailRecommendationsList" class="result-list"></ul>
-                    <h4>Technical details</h4>
-                    <p id="emailTechnicalDetails" class="technical-text"></p>
+                    <p id="emailScore" class="badge-pill" style="margin-top: 12px; display: inline-flex;">Risk score</p>
+                    <div class="status-row" style="margin-top: 20px;">
+                        <span class="status-chip-small">Phish detection</span>
+                        <span class="status-chip-small">Content risk</span>
+                    </div>
+                    <div class="streamline" style="margin-top: 24px;">
+                        <div>
+                            <h4>Reasons</h4>
+                            <ul id="emailReasonsList" class="result-list"></ul>
+                        </div>
+                        <div>
+                            <h4>Recommendations</h4>
+                            <ul id="emailRecommendationsList" class="result-list"></ul>
+                        </div>
+                        <div>
+                            <h4>Technical details</h4>
+                            <p id="emailTechnicalDetails" class="technical-text"></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </main>
+        </div>
 
-            <div class="history-card">
-                <h3>Scan history</h3>
-                <p>Latest email results are shown here.</p>
-                <p id="historyEmpty" class="history-empty">Loading scan history...</p>
-                <div id="historyTableWrapper" style="display:none; overflow-x:auto;">
-                    <table class="history-table">
-                        <thead>
-                            <tr>
-                                <th>Time</th>
-                                <th>Type</th>
-                                <th>Source</th>
-                                <th>Score</th>
-                                <th>Verdict</th>
-                            </tr>
-                        </thead>
-                        <tbody id="historyBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+        <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
     </div>
-
-    <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
     <script>
         function setEmailSample(sender, subject, body) {
             document.getElementById('emailSender').value = sender;
@@ -96,7 +156,7 @@
             historyEmpty.innerText = '';
             history.filter(item => item.type === 'EMAIL').slice(0, 20).forEach(entry => {
                 const row = document.createElement('tr');
-                row.innerHTML = `<td>${new Date(entry.timestamp).toLocaleString()}</td><td>${entry.type}</td><td>${entry.source}</td><td>${entry.score}</td><td class="history-verdict ${entry.verdict}">${entry.verdict}</td>`;
+                row.innerHTML = `<td>${new Date(entry.timestamp).toLocaleString()}</td><td>${entry.source}</td><td>${entry.score}</td><td class="history-verdict ${entry.verdict}">${entry.verdict}</td>`;
                 historyBody.appendChild(row);
             });
         }
@@ -129,13 +189,7 @@
             recommendationsList.innerHTML = '';
             (data.recommendations || []).forEach(item => { const li = document.createElement('li'); li.innerText = item; recommendationsList.appendChild(li); });
             const details = data.details || {};
-            technicalDetails.innerText = `Sender: ${details.sender || 'unknown'}
-Subject: ${details.subject || 'none'}
-Links: ${details.links && details.links.length ? details.links.join(', ') : 'none'}
-Shortened links: ${details.shortened_links ? 'yes' : 'no'}
-HTML content: ${details.has_html_tags ? 'yes' : 'no'}
-Sender/link mismatch: ${details.sender_domain_mismatch ? 'yes' : 'no'}
-All-caps subject: ${details.subject_all_caps ? 'yes' : 'no'}`;
+            technicalDetails.innerText = `Sender: ${details.sender || 'unknown'}\nSubject: ${details.subject || 'none'}\nLinks: ${details.links && details.links.length ? details.links.join(', ') : 'none'}\nShortened links: ${details.shortened_links ? 'yes' : 'no'}\nHTML content: ${details.has_html_tags ? 'yes' : 'no'}\nSender/link mismatch: ${details.sender_domain_mismatch ? 'yes' : 'no'}\nAll-caps subject: ${details.subject_all_caps ? 'yes' : 'no'}`;
             await loadHistory();
         }
 

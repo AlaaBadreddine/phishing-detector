@@ -1,6 +1,6 @@
 # pishing-detector
 
-`pishing-detector` is a lightweight local phishing scanner and research demo powered by Flask. It provides a private, offline-friendly way to test suspicious URLs and email content, generate risk scores, and view results through dashboard pages.
+`pishing-detector` is a lightweight local phishing scanner and research demo powered by Flask. It provides a private, offline-friendly way to test suspicious URLs and email content, generate risk scores, and view results through a polished secure dashboard.
 
 ## Why this project matters
 
@@ -61,7 +61,17 @@ $env:FLASK_APP = "app.py"
 flask run
 ```
 
-Open the web interface at `http://127.0.0.1:5000/`.
+For the modern frontend, install dependencies and run the Vite dev server:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will proxy API calls to Flask and load at the Vite server URL.
+
+Open the web interface at `http://127.0.0.1:5000/` after building or use the Vite preview server when developing.
 
 ## Repository structure
 
@@ -69,7 +79,8 @@ Open the web interface at `http://127.0.0.1:5000/`.
 - `utils/url_checker.py` — URL feature extraction and risk analysis.
 - `utils/email_checker.py` — Email feature extraction and phishing scoring.
 - `utils/risk_scorer.py` — Shared risk scoring logic for URLs and email features.
-- `templates/` — HTML dashboard and input pages.
+- `frontend/` — modern dashboard frontend source.
+- `templates/` — fallback HTML dashboard and input pages.
 - `static/` — CSS and client-side assets.
 
 ## Notes

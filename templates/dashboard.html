@@ -7,55 +7,107 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <nav>
-            <div class="brand" data-i18n="brandName">PhishShield</div>
-            <div class="nav-links">
-                <a href="/" data-i18n="navHome">Home</a>
-                <button class="nav-button" onclick="location.href='/#learn'" data-i18n="navLearn">Learn</button>
-                <button class="nav-button" onclick="location.href='/#story'" data-i18n="navStory">Why this project</button>
-                <button class="cta-button" onclick="location.href='/#contact'" data-i18n="navContact">Contact</button>
-            </div>
-        </nav>
-
-        <section class="dashboard-info-card">
-            <h2 data-i18n="dashboardTitle">How to use PhishShield</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <strong data-i18n="step1Title">1. Paste content</strong>
-                    <p data-i18n="step1Text">Enter a URL or email details into the scanner section.</p>
-                </div>
-                <div class="step-card">
-                    <strong data-i18n="step2Title">2. Scan it</strong>
-                    <p data-i18n="step2Text">Click the button and wait for the dashboard to analyze risk.</p>
-                </div>
-                <div class="step-card">
-                    <strong data-i18n="step3Title">3. Read the result</strong>
-                    <p data-i18n="step3Text">See a simple verdict, reasons, recommendations, and whether it is safe.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="section-title">
-                <h2>Choose a scanner page</h2>
-                <p>Select the report you want: URL scanning or email analysis.</p>
-            </div>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>URL dashboard</h3>
-                    <p>Open the dedicated URL scanner to inspect one link at a time with clear risk logic.</p>
-                    <button class="cta-button" onclick="location.href='/dashboard/url'">Open URL</button>
-                </div>
-                <div class="feature-card">
-                    <h3>Email dashboard</h3>
-                    <p>Open the email scanner to review sender, subject, and message body in a focused workflow.</p>
-                    <button class="cta-button" onclick="location.href='/dashboard/email'">Open Email</button>
-                </div>
-            </div>
-        </section>
+    <div class="scene-grid">
+        <div class="scanline"></div>
     </div>
+    <div class="page-shell">
+        <header class="topbar">
+            <div class="topbar-left">
+                <div class="brand">PhishShield <span>CORE</span></div>
+                <div class="status-chip">Operational • 99.98% uptime</div>
+            </div>
+            <div class="topbar-right">
+                <nav class="nav-links">
+                    <button class="nav-button" onclick="location.href='/'">Home</button>
+                    <button class="nav-button" onclick="location.href='/dashboard/url'">URL</button>
+                    <button class="nav-button" onclick="location.href='/dashboard/email'">Email</button>
+                </nav>
+                <div class="status-chip">Threat matrix • Active</div>
+            </div>
+        </header>
 
-    <footer data-i18n="footerText">PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+        <div class="dashboard-layout">
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3>Navigator</h3>
+                    <div class="sidebar-nav">
+                        <button onclick="location.href='/dashboard/url'">URL Scanner</button>
+                        <button onclick="location.href='/dashboard/email'">Email Analyzer</button>
+                        <button onclick="location.href='/dashboard'">Dashboard</button>
+                        <button onclick="location.href='/'">Home</button>
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <h3>Quick launch</h3>
+                    <p>Open the focused workflow, inspect the latest verdicts, or jump directly to email review.</p>
+                    <button class="neon-button primary-button" onclick="location.href='/dashboard/url'">Launch URL</button>
+                </div>
+                <div class="sidebar-card">
+                    <h3>System health</h3>
+                    <div class="status-row">
+                        <span class="status-chip-small">Secure</span>
+                        <span class="status-chip-small">Ready</span>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="dashboard-main">
+                <section class="hero-panel">
+                    <span class="hero-eyebrow">Command Center</span>
+                    <h1 class="hero-title">Elite phishing protection with a clean SOC-grade interface.</h1>
+                    <p class="hero-copy">A premium operating experience for URL and email analysis. Everything is organized into clear workflows, quick action cards, and insight-rich panels.</p>
+                    <div class="hero-status">
+                        <span class="status-chip-small">Precision scoring</span>
+                        <span class="status-chip-small">Rapid verdicts</span>
+                        <span class="status-chip-small">Fewer false alarms</span>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="neon-button primary-button" onclick="location.href='/dashboard/url'">Open URL Scanner</button>
+                        <button class="neon-button secondary-button" onclick="location.href='/dashboard/email'">Open Email Analyzer</button>
+                    </div>
+                    <div class="panel-grid">
+                        <article class="panel-card">
+                            <h3>Average latency</h3>
+                            <div class="metric-figure">2.3s</div>
+                            <p class="metric-note">Fast analysis for every scan.</p>
+                        </article>
+                        <article class="panel-card">
+                            <h3>Detection confidence</h3>
+                            <div class="metric-figure">98%</div>
+                            <p class="metric-note">Premium clarity in every verdict.</p>
+                        </article>
+                        <article class="panel-card">
+                            <h3>Active modules</h3>
+                            <div class="metric-figure">6</div>
+                            <p class="metric-note">Intelligence, history, and workflow tools.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <div class="dashboard-grid">
+                    <section class="insight-card">
+                        <h3>Workflow snapshot</h3>
+                        <p>Use the left-side navigator to switch tools, then run a scan using the main dashboard workflows.</p>
+                        <div class="status-row" style="margin-top: 18px;">
+                            <span class="status-chip-small">Workspace ready</span>
+                            <span class="status-chip-small">Glowing UI</span>
+                        </div>
+                    </section>
+
+                    <aside class="quick-pane">
+                        <h3>Live feed</h3>
+                        <p>Recent activity and notable detection signals appear here.</p>
+                        <article class="analysis-card" style="margin-top: 18px;">
+                            <h3>Latest Attack Signal</h3>
+                            <p>Suspicious URI pattern detected in previous scans. Review the URL workflow for technical details.</p>
+                        </article>
+                    </aside>
+                </div>
+            </main>
+        </div>
+
+        <footer>PhishShield © 2026 · Open phishing research and detection for everyone.</footer>
+    </div>
+    <script src="{{ url_for('static', filename='ui.js') }}"></script>
 </body>
 </html>

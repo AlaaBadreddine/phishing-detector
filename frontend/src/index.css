@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, rgba(14, 116, 144, 0.12), transparent 30%),
+    radial-gradient(circle at 80% 10%, rgba(124, 58, 237, 0.16), transparent 16%),
+    #020617;
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.32);
+  color: #ffffff;
+}
+
+.bg-halo {
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.2), transparent 72%);
+}
+
+.shadow-panel {
+  box-shadow: 0 28px 90px rgba(15, 23, 42, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.shadow-glow {
+  box-shadow: 0 22px 72px rgba(56, 189, 248, 0.18);
+}
+
+.fade-slow {
+  animation: fadeInUp 0.9s ease-out both;
+}
+
+.glow-ring {
+  box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.08), 0 24px 80px rgba(56, 189, 248, 0.12);
+}
+
+.glow-underline {
+  background-image: linear-gradient(to right, rgba(56, 189, 248, 0.35), rgba(124, 58, 237, 0.35));
+  background-repeat: no-repeat;
+  background-size: 100% 0.38em;
+  background-position: 0 88%;
+}

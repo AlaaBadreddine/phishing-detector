@@ -4,11 +4,13 @@
 
 `pishing-detector` is a lightweight local phishing detection application built with Flask and Python. It is designed as a privacy-first demo and research tool for analyzing suspicious URLs and email content without sending data to third-party services.
 
+The latest version includes a polished secure dashboard, clearer scan reasoning, and actionable fixes alongside score-based verdicts.
+
 The application provides:
 
-- URL scanning with risk scoring and suspicious indicator detection
-- Email scanning with sender and content analysis
-- A simple web interface with dashboards for scanning and reviewing results
+- URL scanning with risk scoring, suspicious indicator detection, and actionable fixes
+- Email scanning with sender and content analysis, plus reasoned recommendations
+- A refined secure dashboard for scanning and reviewing results
 - In-memory history tracking for recent scans
 
 ## Purpose and Value
